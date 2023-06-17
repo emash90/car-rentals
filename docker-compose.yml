@@ -1,0 +1,22 @@
+version: "3"
+services:
+  car-rental:
+    build: .
+    ports:
+      - "5000:5050"
+    environment:
+      - PORT=5050
+    depends_on:
+      - database
+  database:
+    image: mongo
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=emash90
+      - MONGO_INITDB_ROOT_PASSWORD=123456
+    volumes:
+      - mongodb:/data/db
+
+
+
+volumes:
+  mongodb:
