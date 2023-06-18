@@ -13,7 +13,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 //routes
-//app.use('/users', require('./routes/users'));
+app.use('/users', require('./backend/routes/userRoutes'));
 app.use('/cars', require("./backend/routes/carRoutes"));
 //app.use('/orders', require('./routes/orders'));
 
