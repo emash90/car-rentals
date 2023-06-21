@@ -33,9 +33,23 @@ exports.login_user = async (req, res) => {
         if (!user) return res.status(400).json({ msg: 'User does not exist' });
         const password_match = await bcrypt.compare(password, user.password);
         if (!password_match) return res.status(400).json({ msg: 'Invalid credentials' });
-        res.status(200).json({ user:
-            { email: user.email, role: user.role }
-            });
+        req.session.user = user;
+        res.status(200).json({
+            user: {
+                email: user.email,
+                role: user.role
+            }
+        });
+    }
+    catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+}
+
+exports.get_users = async (req, res) => {
+    try {
+        const users = await User.find();
+        res.status(200).json({ users });
     }
     catch (error) {
         res.status(400).json({ error: error.message });
