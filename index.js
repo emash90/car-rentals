@@ -25,6 +25,9 @@ redisClient.on('connect', (err) => {
     console.log('Connected to redis successfully');
 });
 
+//trust nginx proxy
+app.enable('trust proxy');
+
 //create session
 app.use(session({
     store: new RedisStore({ client: redisClient }),
@@ -47,11 +50,14 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 //routes
-app.use('/users', require('./backend/routes/userRoutes'));
-app.use('/cars', require("./backend/routes/carRoutes"));
-app.use('/orders', require('./backend/routes/orderRoutes'));
+app.use('/api/v1/users', require('./backend/routes/userRoutes'));
+app.use('/api/v1/cars', require("./backend/routes/carRoutes"));
+app.use('/api/v1/orders', require('./backend/routes/orderRoutes'));
 
-
+app.get('/api/v1', (req, res) => {
+    res.send('Hello from the server side...');
+    console.log(req.sessionID)
+});
 //connect to mongoDB
 
 const connect_with_retry = () => {
@@ -68,4 +74,6 @@ connect_with_retry();
 app.listen(port, () => {
     console.log(`Server is running on port: ${port}`);
 });
+
+
 

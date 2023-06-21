@@ -1,5 +1,8 @@
 version: "3"
 services:
+  load-balancer:
+    ports:
+      - "5000:80"
   car-rental:
     volumes:
       - ./:/app:ro
