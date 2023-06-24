@@ -5,7 +5,7 @@ const bcrypt = require('bcryptjs');
 
 //create
 exports.register_user = async (req, res) => {
-    const { email, password } = req.body;
+    const { email, password, role } = req.body;
     if ( !email || !password) return res.status(400).json({ msg: 'Please include all fields' });
     const user_exists = await User.findOne({ email });
     if(user_exists) return res.status(400).json({ msg: 'User already exists' });
@@ -13,7 +13,8 @@ exports.register_user = async (req, res) => {
     try {
         const newUser = new User({
             email,
-            password: hashed_password
+            password: hashed_password,
+            role
         });
         await newUser.save()
             .then(() => res.status(200).json({ user:
